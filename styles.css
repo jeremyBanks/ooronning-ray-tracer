@@ -7,3 +7,7 @@
 #target canvas {
     border: 1px solid blue;
 }
+
+#test {
+    color: rgba(2, 0, 0, 0);
+}
