@@ -6,8 +6,14 @@
 
 #target canvas {
     border: 1px solid blue;
+    display: block;
+    margin: 0 auto;
 }
 
+#target img {
+    margin: 100px auto;
+    display: block;
+}
 #test {
     color: rgba(2, 0, 0, 0);
 }
