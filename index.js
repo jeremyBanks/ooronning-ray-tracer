@@ -105,7 +105,8 @@ class Vector {
   }
 
   static dot(v1, v2) {
-    return new Vector(v1.x * v2.x + v1.y * v2.y + v1.z * v2.z);
+    // return new Vector(v1.x * v2.x + v1.y * v2.y + v1.z * v2.z);
+    return v1.x * v2.x + v1.y * v2.y + v1.z * v2.z;
   }
 
   static cross(v1, v2) {
@@ -137,7 +138,7 @@ class Ray {
   }
 
   pointAtParameter(t) {
-    return this.a + (t * this.b);
+    return Vector.add(this.a, Vector.multiply(t, this.b));
   }
 }
 
@@ -147,6 +148,30 @@ class CanvasPainter {
     this.canvas.width = width ? width : 500;
     this.canvas.height = height ? height : 500;
     this.context = this.canvas.getContext('2d');
+  }
+
+  static color(ray) {
+    if (CanvasPainter.hitSphere(new Vector(0, 0, -1), 0.5, ray)) {
+      return new Vector(1, 0, 0);
+    }
+    const unitDirection = Vector.unitVector(ray.direction());
+    const t = 0.5 * (unitDirection.y + 1.0);
+    return Vector.add(Vector.multiply((1.0 - t), new Vector(1.0, 1.0, 1.0)),
+      Vector.multiply(t, new Vector(0.5, 0.7, 1.0)));
+  }
+
+  /*
+  * center: Vector
+  * radius: Float
+  * ray: Ray*/
+  static hitSphere(center, radius, ray) {
+    const oc = Vector.subtract(ray.origin(), center);
+    const a = Vector.dot(ray.direction(), ray.direction());
+    const b = 2.0 * Vector.dot(oc, ray.direction());
+    const c = Vector.dot(oc, oc) - radius * radius;
+
+    const discriminant = b * b - 4 * a * c;
+    return discriminant > 0;
   }
 
   render() {
@@ -165,12 +190,11 @@ class CanvasPainter {
         const a = '0xFF'; // maintain the value of the a pixel in rgba value at 255
         const u = i / this.canvas.width;
         const v = j / this.canvas.height;
-        const ray = new Ray(origin,
-          Vector.add(lowerLeftCorner,
-            Vector.add(Vector.multiply(u, horizontal),
-              Vector.multiply(v, vertical))));
 
-        const col = color(ray);
+        const direction = Vector.add(Vector.multiply(u, horizontal), Vector.multiply(v, vertical));
+        const ray = new Ray(origin, Vector.add(lowerLeftCorner, direction));
+
+        const col = CanvasPainter.color(ray);
 
         const ir = 255.99 * col.x;
         const ig = 255.99 * col.y;
@@ -190,14 +214,6 @@ class CanvasPainter {
     document.getElementById('target').appendChild(this.canvas);
   }
 }
-
-// possibly add this to RayTracer or some more appropriate class later, when elaborated upon
-const color = ray => {
-  const unitDirection = Vector.unitVector(ray.direction());
-  const t = 0.5 * (unitDirection.y + 1.0);
-  return Vector.add(Vector.multiply((1.0 - t), new Vector(1.0, 1.0, 1.0)),
-    Vector.multiply(t, new Vector(0.5, 0.7, 1.0)));
-};
 
 const generateImage = canvas => {
   const img = new Image();
