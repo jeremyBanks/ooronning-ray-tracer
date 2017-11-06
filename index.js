@@ -151,11 +151,14 @@ class CanvasPainter {
   }
 
   static color(ray) {
-    if (CanvasPainter.hitSphere(new Vector(0, 0, -1), 0.5, ray)) {
-      return new Vector(1, 0, 0);
+    let t = CanvasPainter.hitSphere(new Vector(0, 0, -1), 0.5, ray);
+    if (t > 0.0) {
+      const N = Vector.unitVector(Vector.subtract(ray.pointAtParameter(t), new Vector(0, 0, -1)));
+      return Vector.multiply(0.5, new Vector(N.x + 0.9, N.y + 0.5, N.z + 0.2));
     }
+
     const unitDirection = Vector.unitVector(ray.direction());
-    const t = 0.5 * (unitDirection.y + 1.0);
+    t = 0.5 * (unitDirection.y + 1.0);
     return Vector.add(Vector.multiply((1.0 - t), new Vector(1.0, 1.0, 1.0)),
       Vector.multiply(t, new Vector(0.5, 0.7, 1.0)));
   }
@@ -171,7 +174,11 @@ class CanvasPainter {
     const c = Vector.dot(oc, oc) - radius * radius;
 
     const discriminant = b * b - 4 * a * c;
-    return discriminant > 0;
+    if (discriminant < 0) {
+      return -1.0;
+    } else {
+      return (-b - Math.sqrt(discriminant)) / (2.0 * a);
+    }
   }
 
   render() {
