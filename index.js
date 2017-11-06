@@ -2,9 +2,9 @@
 
 class Vector {
   constructor(x, y, z) {
-    this.x = x;
-    this.y = y;
-    this.z = z;
+    this.x = x * 1.0;
+    this.y = y * 1.0;
+    this.z = z * 1.0;
   }
 
   length() {
@@ -122,6 +122,25 @@ class Vector {
   }
 }
 
+class Ray {
+  constructor(vecA, vecB) {
+    this.a = vecA;
+    this.b = vecB;
+  }
+
+  origin() {
+    return this.a;
+  }
+
+  direction() {
+    return this.b;
+  }
+
+  pointAtParameter(t) {
+    return this.a + (t * this.b);
+  }
+}
+
 class CanvasPainter {
   constructor(canvas, width, height) {
     this.canvas = canvas;
@@ -131,26 +150,39 @@ class CanvasPainter {
   }
 
   render() {
+    // allows us to interface with CanvasPainter's internal canvas property
     const imageData = this.context.getImageData(0, 0, this.canvas.width, this.canvas.height);
-    let offset = 0;
+    let arrayOffset = 0;
+
+    const lowerLeftCorner = new Vector(-2.0, -1.0, -1.0);
+    const horizontal = new Vector(4.0, 0.0, 0.0);
+    const vertical = new Vector(0.0, 2.0, 0.0);
+    const origin = new Vector(0.0, 0.0, 0.0);
 
     for (let j = this.canvas.height - 1; j >= 0; j--) {
       for (let i = 0; i < this.canvas.width; i++) {
 
-        const pixel  = new Vector(i / this.canvas.width, j / this.canvas.height, 0.2);
-        const a = '0xFF'; // 255
+        const a = '0xFF'; // maintain the value of the a pixel in rgba value at 255
+        const u = i / this.canvas.width;
+        const v = j / this.canvas.height;
+        const ray = new Ray(origin,
+          Vector.add(lowerLeftCorner,
+            Vector.add(Vector.multiply(u, horizontal),
+              Vector.multiply(v, vertical))));
 
-        const ir = 255.99 * pixel.x;
-        const ig = 255.99 * pixel.y;
-        const ib = 255.99 * pixel.z;
+        const col = color(ray);
+
+        const ir = 255.99 * col.x;
+        const ig = 255.99 * col.y;
+        const ib = 255.99 * col.z;
         const ia = a;
 
-        imageData.data[offset] = ir;
-        imageData.data[offset + 1] = ig;
-        imageData.data[offset + 2] = ib;
-        imageData.data[offset + 3] = ia;
+        imageData.data[arrayOffset] = ir;
+        imageData.data[arrayOffset + 1] = ig;
+        imageData.data[arrayOffset + 2] = ib;
+        imageData.data[arrayOffset + 3] = ia;
 
-        offset += 4;
+        arrayOffset += 4;
       }
     }
 
@@ -158,6 +190,14 @@ class CanvasPainter {
     document.getElementById('target').appendChild(this.canvas);
   }
 }
+
+// possibly add this to RayTracer or some more appropriate class later, when elaborated upon
+const color = ray => {
+  const unitDirection = Vector.unitVector(ray.direction());
+  const t = 0.5 * (unitDirection.y + 1.0);
+  return Vector.add(Vector.multiply((1.0 - t), new Vector(1.0, 1.0, 1.0)),
+    Vector.multiply(t, new Vector(0.5, 0.7, 1.0)));
+};
 
 const generateImage = canvas => {
   const img = new Image();
@@ -167,7 +207,7 @@ const generateImage = canvas => {
 
 const main = () => {
   const canvas = document.createElement('canvas');
-  const painter = new CanvasPainter(canvas, 200, 100);
+  const painter = new CanvasPainter(canvas, 400, 200);
 
   painter.render();
   generateImage(canvas);
