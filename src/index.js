@@ -154,7 +154,7 @@ class CanvasPainter {
     let t = CanvasPainter.hitSphere(new Vector(0, 0, -1), 0.5, ray);
     if (t > 0.0) {
       const N = Vector.unitVector(Vector.subtract(ray.pointAtParameter(t), new Vector(0, 0, -1)));
-      return Vector.multiply(0.5, new Vector(N.x + 0.9, N.y + 0.5, N.z + 0.2));
+      return Vector.multiply(0.5, new Vector(N.x + 0.1, N.y + .7, N.z + 0.3));
     }
 
     const unitDirection = Vector.unitVector(ray.direction());

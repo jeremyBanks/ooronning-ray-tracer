@@ -1,8 +1,11 @@
 <!DOCTYPE html>
 <head>
-  <script src='index.js' async></script>
+  <script data-main='dist/bundle.js' src='dist/require.js'></script>
   <link rel="stylesheet" type="text/css" href="styles.css" />
 </head>
 <body>
   <div id='target'></div>
+  <script>
+    requirejs(['main'], main => main())
+  </script>
 </body>

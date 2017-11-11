@@ -1,0 +1,16 @@
+{
+  "compilerOptions": {
+    "allowJs": true,
+    "module": "AMD",
+    "target": "es6",
+    "sourceMap": true,
+    "newLine": "LF",
+    "outFile": "dist/bundle.js"
+  },
+  "include": [ 
+    "src/**/*.ts"
+  ],
+  "exclude": [
+    "node_modules", "dist"
+  ]
+}
