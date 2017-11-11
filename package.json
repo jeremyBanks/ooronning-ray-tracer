@@ -1,6 +1,5 @@
 {
   "dependencies": {
-    "requirejs": "^2.3.5",
-    "typescript": "^2.6.1"
+    "typescript": "2.2.1"
   }
 }

@@ -1,26 +1,30 @@
 export default class Vector {
-  constructor(x, y, z) {
+  x: number;
+  y: number;
+  z: number;
+
+  constructor(x: number, y: number, z: number) {
     this.x = x * 1.0;
     this.y = y * 1.0;
     this.z = z * 1.0;
   }
 
-  length() {
+  length() : number {
     return Math.sqrt((this.x * this.x) + (this.y * this.y) + (this.z * this.z));
   }
 
-  squaredLength() {
+  squaredLength() : number {
     return (this.x * this.x) + (this.y * this.y) + (this.z * this.z);
   }
 
-  makeUnitVector() {
+  makeUnitVector() : void {
     const k = 1.0 / this.length();
     this.x *= k;
     this.y *= k;
     this.z *= k;
   }
 
-  add(v) {
+  add(v: Vector) : Vector {
     this.x += v.x;
     this.y += v.y;
     this.z += v.z;
@@ -28,7 +32,7 @@ export default class Vector {
     return this;
   }
 
-  subtract(v) {
+  subtract(v: Vector) : Vector {
     this.x -= v.x;
     this.y -= v.y;
     this.z -= v.z;
@@ -36,7 +40,9 @@ export default class Vector {
     return this;
   }
 
-  multiply(arg) {
+  multiply(arg: Vector) : Vector;
+  multiply(arg: number) : Vector;
+  multiply(arg) : Vector {
     if (arg instanceof Vector) {
       this.x *= arg.x;
       this.y *= arg.y;
@@ -52,7 +58,9 @@ export default class Vector {
     return this;
   }
 
-  divide(arg) {
+  divide(arg: Vector) : Vector;
+  divide(arg: number) : Vector;
+  divide(arg) : Vector {
     if (arg instanceof Vector) {
       this.x /= arg.x;
       this.y /= arg.y;
@@ -70,15 +78,18 @@ export default class Vector {
     return this;
   }
 
-  static add(v1, v2) {
+  static add(v1, v2) : Vector {
     return new Vector(v1.x + v2.x, v1.y + v2.y, v1.z + v2.z);
   }
 
-  static subtract(v1, v2) {
+  static subtract(v1, v2) : Vector {
     return new Vector(v1.x - v2.x, v1.y - v2.y, v1.z - v2.z);
   }
 
-  static multiply(arg1, arg2) {
+  static multiply(arg1: Vector, arg2: Vector) : Vector;
+  static multiply(arg1: Vector, arg2: number) : Vector;
+  static multiply(arg1: number, arg2: Vector) : Vector;
+  static multiply(arg1, arg2) : Vector {
     if (arg1 instanceof Vector && arg2 instanceof Vector) {
       return new Vector(arg1.x * arg2.x, arg1.y * arg2.y, arg1.z * arg2.z);
     }
@@ -94,7 +105,10 @@ export default class Vector {
     throw new Error('At least one argument must be a Vector');
   }
 
-  static divide(v1, arg2) {
+  static divide(arg1: Vector, arg2: Vector) : Vector;
+  static divide(arg1: Vector, arg2: number) : Vector;
+  static divide(arg1: number, arg2: Vector) : Vector;
+  static divide(v1, arg2) : Vector {
     if (arg2 instanceof Vector) {
       return new Vector(v1.x / arg2.x, v1.y / arg2.y, v1.z / arg2.z);
     }
@@ -102,12 +116,12 @@ export default class Vector {
     return new Vector(v1.x / arg2, v1.y / arg2, v1.z / arg2);
   }
 
-  static dot(v1, v2) {
+  static dot(v1: Vector, v2: Vector) : number {
     // return new Vector(v1.x * v2.x + v1.y * v2.y + v1.z * v2.z);
     return v1.x * v2.x + v1.y * v2.y + v1.z * v2.z;
   }
 
-  static cross(v1, v2) {
+  static cross(v1: Vector, v2: Vector) : Vector {
     return new Vector(
       (v1.y * v2.z) - (v1.z * v2.y),
       -((v1.x * v2.z) - (v1.z * v2.x)),
@@ -115,7 +129,7 @@ export default class Vector {
     );
   }
 
-  static unitVector(v) {
+  static unitVector(v: Vector) : Vector {
     const l = v.length();
     return new Vector(v.x / l, v.y / l, v.z / l);
   }

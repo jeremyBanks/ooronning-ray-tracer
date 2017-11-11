@@ -2,6 +2,9 @@ import Vector from './Vector';
 import Ray from './Ray';
 
 export default class CanvasPainter {
+  canvas: HTMLCanvasElement;
+  context: any; // fix once this is better understood
+  
   constructor(canvas, width, height) {
     this.canvas = canvas;
     this.canvas.width = width ? width : 500;
