@@ -5,7 +5,7 @@
     "target": "es6",
     "sourceMap": true,
     "newLine": "LF",
-    "outFile": "dist/bundle.js"
+    "outDir": "dist"
   },
   "include": [ 
     "src/**/*.ts"
