@@ -1,9 +1,9 @@
 import CanvasPainter from './CanvasPainter';
 
-const generateImage = canvas => {
+const generateImage = (canvas: HTMLCanvasElement) => {
   const img = new Image();
   img.src = canvas.toDataURL('image/png');
-  document.getElementById('target').appendChild(img);
+  document.getElementById('target')!.appendChild(img);
 };
 
 const main = () => {

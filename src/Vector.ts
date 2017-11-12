@@ -40,9 +40,7 @@ export default class Vector {
     return this;
   }
 
-  multiply(arg: Vector) : Vector;
-  multiply(arg: number) : Vector;
-  multiply(arg) : Vector {
+  multiply(arg: number|Vector) : Vector {
     if (arg instanceof Vector) {
       this.x *= arg.x;
       this.y *= arg.y;
@@ -58,9 +56,7 @@ export default class Vector {
     return this;
   }
 
-  divide(arg: Vector) : Vector;
-  divide(arg: number) : Vector;
-  divide(arg) : Vector {
+  divide(arg: number|Vector) : Vector {
     if (arg instanceof Vector) {
       this.x /= arg.x;
       this.y /= arg.y;
@@ -86,10 +82,7 @@ export default class Vector {
     return new Vector(v1.x - v2.x, v1.y - v2.y, v1.z - v2.z);
   }
 
-  static multiply(arg1: Vector, arg2: Vector) : Vector;
-  static multiply(arg1: Vector, arg2: number) : Vector;
-  static multiply(arg1: number, arg2: Vector) : Vector;
-  static multiply(arg1, arg2) : Vector {
+  static multiply(arg1: number|Vector, arg2: Vector|Vector) : Vector {
     if (arg1 instanceof Vector && arg2 instanceof Vector) {
       return new Vector(arg1.x * arg2.x, arg1.y * arg2.y, arg1.z * arg2.z);
     }
@@ -105,10 +98,7 @@ export default class Vector {
     throw new Error('At least one argument must be a Vector');
   }
 
-  static divide(arg1: Vector, arg2: Vector) : Vector;
-  static divide(arg1: Vector, arg2: number) : Vector;
-  static divide(arg1: number, arg2: Vector) : Vector;
-  static divide(v1, arg2) : Vector {
+  static divide(v1: number|Vector, arg2: number|Vector) : Vector {
     if (arg2 instanceof Vector) {
       return new Vector(v1.x / arg2.x, v1.y / arg2.y, v1.z / arg2.z);
     }

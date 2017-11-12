@@ -12,7 +12,7 @@ export default class CanvasPainter {
     this.canvas = canvas;
     this.canvas.width = width ? width : 500;
     this.canvas.height = height ? height : 500;
-    this.context = this.canvas.getContext('2d');
+    this.context = this.canvas.getContext('2d')!;
   }
 
   static color(ray: Ray, world: Hitable) : Vector {
@@ -83,6 +83,6 @@ export default class CanvasPainter {
     }
 
     this.context.putImageData(imageData, 0, 0);
-    document.getElementById('target').appendChild(this.canvas);
+    document.getElementById('target')!.appendChild(this.canvas);
   }
 }
