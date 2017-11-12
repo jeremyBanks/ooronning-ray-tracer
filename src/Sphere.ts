@@ -13,7 +13,7 @@ export default class Sphere extends Hitable {
     this.radius = r;
   }
 
-  hit(ray: Ray, tMin: number, tMax: number, rec: HitRecord) : boolean {
+  hit(ray: Ray, tMin: number, tMax: number): HitRecord | null {
     const oc: Vector = Vector.subtract(ray.origin(), this.center);
     const a: number = Vector.dot(ray.direction(), ray.direction());
     const b: number = Vector.dot(oc, ray.direction());
@@ -25,20 +25,25 @@ export default class Sphere extends Hitable {
       let temp: number = (-b - Math.sqrt(b*b - a*c)) / a;
 
       if (temp < tMax && temp > tMin) {
-        rec.t = temp;
-        rec.p = ray.pointAtParameter(rec.t);
-        rec.normal = Vector.divide(Vector.subtract(rec.p, this.center), this.radius);
-        return true;
+        const p = ray.pointAtParameter(temp);
+        return {
+          t: temp,
+          p: p,
+          normal: Vector.divide(Vector.subtract(p, this.center), this.radius)
+        };
       }
       
       temp = (-b + Math.sqrt(b*b - a*c)) / a;
       if (temp < tMax && temp > tMin) {
-        rec.t = temp;
-        rec.p = ray.pointAtParameter(rec.t);
-        rec.normal = Vector.divide(Vector.subtract(rec.p, this.center), this.radius);
-        return true;
+        const p = ray.pointAtParameter(temp);
+        return {
+          t: temp,
+          p: p,
+          normal: Vector.divide(Vector.subtract(p, this.center), this.radius)
+        };
       }
     }
-    return false;
+
+    return null;
   }
 }

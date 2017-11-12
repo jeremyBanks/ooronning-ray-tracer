@@ -13,24 +13,18 @@ export default class HitableList extends Hitable {
     this.listSize = n;
   }
 
-  hit(ray: Ray, tMin: number, tMax: number, rec: HitRecord): boolean {
-    // let tempRec: HitRecord;
-    const tempRec: HitRecord = {
-      t: 0,
-      p: new Vector(0, 0, 0),
-      normal: new Vector(0, 0, 0)
-    };
+  hit(ray: Ray, tMin: number, tMax: number): HitRecord | null {
     let hitAnything: boolean = false;
-    let closestSoFar: number = tMax;
+    let closestSoFar: HitRecord | null = null;
 
     for (let i = 0; i < this.listSize; i++) {
-      if (this.list[i].hit(ray, tMin, closestSoFar, tempRec)) {
+      const tempRec = this.list[i].hit(ray, tMin, closestSoFar ? closestSoFar.t : Infinity);
+      if (tempRec) {
         hitAnything = true;
-        closestSoFar = tempRec.t;
-        rec = tempRec;
+        closestSoFar = tempRec;
       }
     }
 
-    return hitAnything;
+    return closestSoFar;
   }
 }

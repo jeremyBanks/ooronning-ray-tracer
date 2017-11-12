@@ -8,5 +8,5 @@ export interface HitRecord {
 }
 
 export default abstract class Hitable {
-  abstract hit(ray: Ray, tMin: number, tMax: number, rec: HitRecord): boolean;
+  abstract hit(ray: Ray, tMin: number, tMax: number): HitRecord | null;
 }
