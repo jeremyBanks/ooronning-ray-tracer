@@ -78,11 +78,11 @@ export default class Vector {
     return this;
   }
 
-  static add(v1, v2) : Vector {
+  static add(v1: Vector, v2: Vector) : Vector {
     return new Vector(v1.x + v2.x, v1.y + v2.y, v1.z + v2.z);
   }
 
-  static subtract(v1, v2) : Vector {
+  static subtract(v1: Vector, v2: Vector) : Vector {
     return new Vector(v1.x - v2.x, v1.y - v2.y, v1.z - v2.z);
   }
 

@@ -4,7 +4,7 @@ export default class Ray {
   a: Vector;
   b: Vector;
 
-  constructor(vecA, vecB) {
+  constructor(vecA: Vector, vecB: Vector) {
     this.a = vecA;
     this.b = vecB;
   }
@@ -17,7 +17,7 @@ export default class Ray {
     return this.b;
   }
 
-  pointAtParameter(t): Vector {
+  pointAtParameter(t: number): Vector {
     return Vector.add(this.a, Vector.multiply(t, this.b));
   }
 }
