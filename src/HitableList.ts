@@ -13,13 +13,17 @@ export default class HitableList extends Hitable {
     this.listSize = n;
   }
 
-  hit(ray: Ray, tMin: number, tMax: number, rec: HitRecord): boolean {
-    // let tempRec: HitRecord;
-    const tempRec: HitRecord = {
-      t: 0,
-      p: new Vector(0, 0, 0),
-      normal: new Vector(0, 0, 0)
-    };
+  hit(ray: Ray, tMin: number, tMax: number, rec: HitRecord|null): HitRecord|null {
+    let tempRec: HitRecord;
+    if (rec) tempRec = rec
+    else {
+      tempRec = {
+        t: 0,
+        p: new Vector(0, 0, 0),
+        normal: new Vector(0, 0, 0)
+      };
+    }
+    
     let hitAnything: boolean = false;
     let closestSoFar: number = tMax;
 
@@ -31,6 +35,10 @@ export default class HitableList extends Hitable {
       }
     }
 
-    return hitAnything;
+    if (hitAnything) {
+      return tempRec;
+    } 
+
+    return null;
   }
 }

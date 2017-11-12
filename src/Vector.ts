@@ -82,7 +82,7 @@ export default class Vector {
     return new Vector(v1.x - v2.x, v1.y - v2.y, v1.z - v2.z);
   }
 
-  static multiply(arg1: number|Vector, arg2: Vector|Vector) : Vector {
+  static multiply(arg1: number|Vector, arg2: number|Vector) : Vector {
     if (arg1 instanceof Vector && arg2 instanceof Vector) {
       return new Vector(arg1.x * arg2.x, arg1.y * arg2.y, arg1.z * arg2.z);
     }
